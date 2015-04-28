@@ -6,8 +6,17 @@
 package ru.denis.command;
 
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -68,5 +77,78 @@ public class CommandBean {
     }
     
     //private 
+    
+    
+    
+    public static Path createFileComands(String txt){
+        
+        Path cmd = null;
+        try{
+            String folder = "c:/";
+
+            Path path = Paths.get(folder, "comand.txt");
+
+            Files.deleteIfExists(path);
+            
+            cmd = Files.createFile(path);
+        
+            try(OutputStream bigOut = new BufferedOutputStream(Files.newOutputStream(cmd))){
+                bigOut.write(txt.getBytes());
+            }
+            
+        }catch(Exception e){
+            System.out.println("ошибка!");
+        }
+        return cmd;
+    }
+
+    
+    
+    public static Path createBatFile(Path comandFile) {
+        
+        String defPasswordFile = "d://defpass";
+        String asadminbat = "asadmin.bat";
+        String portnumber = "2048";
+        
+        
+        
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(asadminbat);
+        sb.append(" ");
+        sb.append("--port ");
+        sb.append(portnumber);
+        
+        sb.append(" --passwordfile");
+        sb.append(" ");
+        sb.append(defPasswordFile);
+        sb.append(" ");
+        sb.append("multimode --file");
+        sb.append(" ");
+        sb.append(comandFile.toString());
+        
+        
+        String folder = "c:/";
+
+        Path file = null;
+        Path bat = null;
+        try {
+            file = Paths.get(folder, "run.bat");
+
+            Files.deleteIfExists(file);
+            bat = Files.createFile(file);         
+            
+            
+            try(OutputStream bigOut = new BufferedOutputStream(Files.newOutputStream(bat))){
+                bigOut.write(sb.toString().getBytes());
+            }            
+        
+        } catch (IOException ex) {
+            Logger.getLogger(CommandBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return bat;
+    }
     
 }
