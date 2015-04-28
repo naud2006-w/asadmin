@@ -7,8 +7,10 @@ package ru.denis.command;
 
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ru.denis.asadmin.Asadmin;
 
 /**
  *
@@ -51,7 +54,7 @@ public class CommandBean {
             sb.append("\r\n");
         }
         
-        // РїСЂРѕСЃС‚Р°РІР»СЏРµРј С‚РµРєСѓС‰РёРµ РѕРїС†РёРё
+        // проставляем текущие опции
         
         sb.append("create-jvm-options -Dgkhconf.jvm.dbaddress=");
         sb.append(curDbName);
@@ -84,7 +87,7 @@ public class CommandBean {
         
         Path cmd = null;
         try{
-            String folder = "c:/";
+            String folder = "c:/R";
 
             Path path = Paths.get(folder, "comand.txt");
 
@@ -97,7 +100,7 @@ public class CommandBean {
             }
             
         }catch(Exception e){
-            System.out.println("РѕС€РёР±РєР°!");
+            System.out.println("ошибка!");
         }
         return cmd;
     }
@@ -106,8 +109,8 @@ public class CommandBean {
     
     public static Path createBatFile(Path comandFile) {
         
-        String defPasswordFile = "d://defpass";
-        String asadminbat = "asadmin.bat";
+        String defPasswordFile = "c:/default.adminPassword.properties";
+        String asadminbat = "c:/glassfish4/bin/asadmin.bat";
         String portnumber = "2048";
         
         
@@ -126,9 +129,11 @@ public class CommandBean {
         sb.append("multimode --file");
         sb.append(" ");
         sb.append(comandFile.toString());
+        sb.append(" ");
+        //sb.append(" >> rrr.txt");
         
         
-        String folder = "c:/";
+        String folder = "c:/R";
 
         Path file = null;
         Path bat = null;
@@ -149,6 +154,27 @@ public class CommandBean {
         
         
         return bat;
+    }
+    
+    public static void runComand() throws InterruptedException{
+        Path comandFille = CommandBean.createFileComands(changeOption());
+        //Path comandFille = CommandBean.createFileComands("sdfsdgfasdfasdfd \r\n привет строка");
+        
+        Path batFile = CommandBean.createBatFile(comandFille);
+        
+        try {
+            Process p = Runtime.getRuntime().exec("cmd /c " + batFile.toString());
+            //p.waitFor();
+            
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String s;
+           while((s = bufferedReader.readLine()) != null) System.out.println(s);
+            
+           p.exitValue();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

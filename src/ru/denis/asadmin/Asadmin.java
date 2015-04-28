@@ -5,7 +5,9 @@
  */
 package ru.denis.asadmin;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,21 +25,16 @@ public class Asadmin {
     public static void main(String[] args) {
         
         
-        //Mainwindow mw = new Mainwindow();
-        
-        //mw.show();
-        
-        
-        Path comandFille = CommandBean.createFileComands("sdfsdgfasdfasdfd \r\n привет строка");
-        
-        Path batFile = CommandBean.createBatFile(comandFille);
+//        Mainwindow mw = new Mainwindow();
+//        
+//        mw.show();
         
         try {
-            Runtime.getRuntime().exec(new String[] {"notepad.exe", batFile.toString()});
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            CommandBean.runComand();
+        } catch (InterruptedException ex) {
             Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
 }
