@@ -15,11 +15,12 @@ import java.util.List;
 public class AppConst {
     
     // Список доступных команд
-    public static final String[] listCommand = new String[]{"Запуск сервера с переменными",
-        "Стоп сервера",
-        "Старт серврера",
-        "Рестарт сервера",
-        "Опции сервера (jvm-options-list)"
+    public static final String[] listCommand = new String[]{
+                    "Запуск сервера с переменными",
+                    "Стоп сервера",
+                    "Старт серврера",
+                    "Рестарт сервера",
+                    "Опции сервера (jvm-options-list)"
                 };    
 
     public AppConst() {        
