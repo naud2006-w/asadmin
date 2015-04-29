@@ -127,12 +127,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x41d;&#x430;&#x441;&#x442;&#x440;&#x43e;&#x439;&#x43a;&#x430; GF"/>
+                <Property name="text" type="java.lang.String" value="&#x41d;&#x430;&#x441;&#x442;&#x440;&#x43e;&#x439;&#x43a;&#x430; GF ( -Dgkhconf.jvm.dbschema )"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x421;&#x435;&#x440;&#x432;&#x435;&#x440; &#x411;&#x414;"/>
+                <Property name="text" type="java.lang.String" value="&#x421;&#x435;&#x440;&#x432;&#x435;&#x440; &#x411;&#x414;  ( -Dgkhconf.jvm.dbaddress )"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -144,17 +144,14 @@
               <SubComponents>
                 <Component class="javax.swing.JList" name="jList1">
                   <Properties>
-                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="&#x417;&#x430;&#x43f;&#x443;&#x441;&#x43a; &#x441;&#x435;&#x440;&#x432;&#x435;&#x440;&#x430; &#x441; &#x43f;&#x435;&#x440;&#x435;&#x43c;&#x435;&#x43d;&#x43d;&#x44b;&#x43c;&#x438;"/>
-                        <StringItem index="1" value="&#x421;&#x442;&#x43e;&#x43f; &#x441;&#x435;&#x440;&#x432;&#x435;&#x440;&#x430;"/>
-                        <StringItem index="2" value="&#x421;&#x442;&#x430;&#x440;&#x442; &#x441;&#x435;&#x440;&#x432;&#x440;&#x435;&#x440;&#x430;"/>
-                        <StringItem index="3" value="&#x420;&#x435;&#x441;&#x442;&#x430;&#x440;&#x442; &#x441;&#x435;&#x440;&#x432;&#x435;&#x440;&#x430;"/>
-                        <StringItem index="4" value="&#x41e;&#x43f;&#x446;&#x438;&#x438; &#x441;&#x435;&#x440;&#x432;&#x435;&#x440;&#x430; (jvm-options-list) "/>
-                      </StringArray>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.AbstractListModel() {&#xd;&#xa;            String[] strings = AppConst.listCommand;&#xd;&#xa;            public int getSize() { return strings.length; }&#xd;&#xa;            public Object getElementAt(int i) { return strings[i]; }&#xd;&#xa;}" type="code"/>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="dblClickList"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -237,6 +234,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x412;&#x44b;&#x43f;&#x43e;&#x43b;&#x43d;&#x438;&#x442;&#x44c; &#x43a;&#x43e;&#x43c;&#x430;&#x43d;&#x434;&#x44b;"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="runComandBtnClk"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton5">
               <Properties>

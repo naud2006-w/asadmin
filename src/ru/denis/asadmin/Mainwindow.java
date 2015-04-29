@@ -5,6 +5,9 @@
  */
 package ru.denis.asadmin;
 
+import ru.denis.command.CommandBean;
+import ru.denis.utilits.AppConst;
+
 /**
  *
  * @author naumenko_ds
@@ -54,21 +57,26 @@ public class Mainwindow extends javax.swing.JFrame {
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel1.setText("РќР°СЃС‚СЂРѕР№РєР° GF");
+        jLabel1.setText("Настройка GF ( -Dgkhconf.jvm.dbschema )");
 
-        jLabel2.setText("РЎРµСЂРІРµСЂ Р‘Р”");
+        jLabel2.setText("Сервер БД  ( -Dgkhconf.jvm.dbaddress )");
 
         jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Р—Р°РїСѓСЃРє СЃРµСЂРІРµСЂР° СЃ РїРµСЂРµРјРµРЅРЅС‹РјРё", "РЎС‚РѕРї СЃРµСЂРІРµСЂР°", "РЎС‚Р°СЂС‚ СЃРµСЂРІСЂРµСЂР°", "Р РµСЃС‚Р°СЂС‚ СЃРµСЂРІРµСЂР°", "РћРїС†РёРё СЃРµСЂРІРµСЂР° (jvm-options-list) " };
+            String[] strings = AppConst.listCommand;
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dblClickList(evt);
+            }
+        });
         jScrollPane1.setViewportView(jList1);
 
-        jLabel3.setText("РЎРїРёСЃРѕРє РєРѕРјР°РЅРґ");
+        jLabel3.setText("Список команд");
 
-        jButton1.setText("РќР°СЃС‚СЂРѕР№РєР° РїСЂРѕРіСЂР°РјРјС‹");
+        jButton1.setText("Настройка программы");
 
         jButton2.setText("i");
 
@@ -122,9 +130,14 @@ public class Mainwindow extends javax.swing.JFrame {
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
 
-        jButton4.setText("Р’С‹РїРѕР»РЅРёС‚СЊ РєРѕРјР°РЅРґС‹");
+        jButton4.setText("Выполнить команды");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                runComandBtnClk(evt);
+            }
+        });
 
-        jButton5.setText("РћС‡РёСЃС‚РёС‚СЊ РєРѕРјР°РЅРґС‹");
+        jButton5.setText("Очистить команды");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -164,6 +177,21 @@ public class Mainwindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void dblClickList(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dblClickList
+        // если двойной клик то работаем
+        if(evt.getClickCount() == 2){           
+            
+            jTextArea2.setText(CommandBean.createCommand((String) jList1.getSelectedValue()));            
+        }
+    }//GEN-LAST:event_dblClickList
+
+    private void runComandBtnClk(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_runComandBtnClk
+        
+        String comandtxt = jTextArea2.getText();        
+        
+        CommandBean.runComand(comandtxt);        
+    }//GEN-LAST:event_runComandBtnClk
 
     /**
      * @param args the command line arguments

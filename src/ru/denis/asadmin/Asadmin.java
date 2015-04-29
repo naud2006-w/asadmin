@@ -25,15 +25,15 @@ public class Asadmin {
     public static void main(String[] args) {
         
         
-//        Mainwindow mw = new Mainwindow();
-//        
-//        mw.show();
+        Mainwindow mw = new Mainwindow();
         
-        try {
-            CommandBean.runComand();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mw.show();
+        
+//        try {
+//            CommandBean.runComand();
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         
     }
     

@@ -20,58 +20,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.denis.asadmin.Asadmin;
+import ru.denis.utilits.AppConst;
+import static ru.denis.utilits.StringUtilits.isEmpty;
 
 /**
  *
  * @author naumenko_ds
  */
-public class CommandBean {
-
-    public static String changeOption(){
-        
-        StringBuilder sb = new StringBuilder();
-        
-        List<String> optionShemaList = new ArrayList<>();
-        List<String> optionDbList = new ArrayList<>();
-        
-        String domainName = getDomainName();
-        String curShemaName = "";
-        String curDbName = "";
-        
-        for(String shi : optionShemaList){
-            sb.append("delete-jvm-options -Dgkhconf.jvm.dbschema=");
-            sb.append(shi);
-            sb.append("\r\n");
-        }
-        
-        sb.append("create-jvm-options -Dgkhconf.jvm.dbschema=");
-        sb.append(curShemaName);
-        sb.append("\r\n");
-        
-        for(String dbi : optionDbList){
-            sb.append("delete-jvm-options -Dgkhconf.jvm.dbaddress=");
-            sb.append(dbi);
-            sb.append("\r\n");
-        }
-        
-        // проставляем текущие опции
-        
-        sb.append("create-jvm-options -Dgkhconf.jvm.dbaddress=");
-        sb.append(curDbName);
-        sb.append("\r\n");
-        
-        
-        //  jdbc\\:oracle\\:thin\\:@192\\.168\\.3\\.23\\:1521\\:db23
-
-        sb.append("stop-domain ");
-        sb.append(domainName); 
-        sb.append("\r\n");
-        sb.append("start-domain ");
-        sb.append("\r\n");         
-        
-        
-        return sb.toString();
-    }
+public class CommandBean {  
     
     
     private static String getDomainName(){
@@ -87,7 +43,7 @@ public class CommandBean {
         
         Path cmd = null;
         try{
-            String folder = "c:/R";
+            String folder = "c:/";
 
             Path path = Paths.get(folder, "comand.txt");
 
@@ -133,7 +89,7 @@ public class CommandBean {
         //sb.append(" >> rrr.txt");
         
         
-        String folder = "c:/R";
+        String folder = "c:/";
 
         Path file = null;
         Path bat = null;
@@ -156,25 +112,127 @@ public class CommandBean {
         return bat;
     }
     
-    public static void runComand() throws InterruptedException{
-        Path comandFille = CommandBean.createFileComands(changeOption());
-        //Path comandFille = CommandBean.createFileComands("sdfsdgfasdfasdfd \r\n привет строка");
+   
+    
+    
+    public static void runComand(String comand){
+        
+        if(isEmpty(comand)){
+            
+            LoggerBean.writeLog("Команда пустая!!!!");
+            
+            return;
+        }
+        
+        
+        // если команда есть пробуем ее зарпустить        
+        Path comandFille = CommandBean.createFileComands(comand);        
         
         Path batFile = CommandBean.createBatFile(comandFille);
         
         try {
-            Process p = Runtime.getRuntime().exec("cmd /c " + batFile.toString());
-            //p.waitFor();
+            Process p = Runtime.getRuntime().exec("cmd /c " + batFile.toString());           
             
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String s;
-           while((s = bufferedReader.readLine()) != null) System.out.println(s);
+            while((s = bufferedReader.readLine()) != null) System.out.println(s);
             
-           p.exitValue();
+            p.exitValue();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        LoggerBean.writeLog("команда НЕ пустая");        
     }
     
+    public static String createCommand(String listelement){
+        
+        String rez = "";
+        
+        String[] command = AppConst.listCommand;
+        
+        if(listelement.equals(command[0])){
+            rez = changeOption0();
+        }else if(listelement.equals(command[1])){
+            rez = stopServer1();
+        }else if(listelement.equals(command[2])){
+            rez = startServer2();
+        }else if(listelement.equals(command[3])){
+            rez = reStartServer3();
+        }else if(listelement.equals(command[4])){
+            rez = optionsServer4();
+        }      
+        
+        
+        return rez;
+    }
+    
+    /**
+     * 0 элемент
+     * @return 
+     */
+    private static String changeOption0(){
+        
+        StringBuilder sb = new StringBuilder();
+        
+        List<String> optionShemaList = new ArrayList<>();
+        List<String> optionDbList = new ArrayList<>();
+        
+        String domainName = getDomainName();
+        String curShemaName = "";
+        String curDbName = "";
+        
+        for(String shi : optionShemaList){
+            sb.append("delete-jvm-options -Dgkhconf.jvm.dbschema=");
+            sb.append(shi);
+            sb.append("\r\n");
+        }
+        
+        sb.append("create-jvm-options -Dgkhconf.jvm.dbschema=");
+        sb.append(curShemaName);
+        sb.append("\r\n");
+        
+        for(String dbi : optionDbList){
+            sb.append("delete-jvm-options -Dgkhconf.jvm.dbaddress=");
+            sb.append(dbi);
+            sb.append("\r\n");
+        }
+        
+        // проставляем текущие опции
+        
+        sb.append("create-jvm-options -Dgkhconf.jvm.dbaddress=");
+        sb.append(curDbName);
+        sb.append("\r\n");
+        
+        
+        //  jdbc\\:oracle\\:thin\\:@192\\.168\\.3\\.23\\:1521\\:db23
+
+        sb.append("stop-domain ");
+        sb.append(domainName); 
+        sb.append("\r\n");
+        sb.append("start-domain ");
+        sb.append("\r\n");         
+        
+        
+        return sb.toString();
+    }
+    
+    private static String stopServer1(){
+        
+        return "stop-domain";
+    }
+    
+    private static String startServer2(){
+        
+        return "start-domain";
+    }
+    
+    private static String reStartServer3(){
+        return "restart-domain";
+    }
+    
+    private static String optionsServer4(){
+        return "list-jvm-options";
+    }
 }
