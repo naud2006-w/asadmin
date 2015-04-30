@@ -33,17 +33,35 @@ public class CommandBean {
     private static String getDomainName(){
     
         return "domain2";
+    }    
+    
+    private static String getPortnumber(){
+        
+        return "20048";
     }
     
-    //private 
+    private static String getAsadminBat(){
+        
+        return "c:/glassfish4/bin/asadmin.bat";
+    }
     
+    private static String getDefAdmPasswordFile(){
+        
+        return "c:/default.adminPassword.properties";
+    }
     
+    private static String getWorkFolder(){
+        
+        String wf = Paths.get("c://").toString();
+        
+        return wf;
+    }
     
-    public static Path createFileComands(String txt){
+    private static Path createFileComands(String txt){
         
         Path cmd = null;
         try{
-            String folder = "c:/";
+            String folder = getWorkFolder();
 
             Path path = Paths.get(folder, "comand.txt");
 
@@ -60,36 +78,27 @@ public class CommandBean {
         }
         return cmd;
     }
-
     
-    
-    public static Path createBatFile(Path comandFile) {
+    private static Path createBatFile(Path comandFile) {
         
-        String defPasswordFile = "c:/default.adminPassword.properties";
-        String asadminbat = "c:/glassfish4/bin/asadmin.bat";
-        String portnumber = "2048";
-        
+        String defPasswordFile = getDefAdmPasswordFile();
+        String asadminbat = getAsadminBat();
+        String portnumber = getPortnumber();       
         
         
         StringBuilder sb = new StringBuilder();
         
-        sb.append(asadminbat);
-        sb.append(" ");
-        sb.append("--port ");
-        sb.append(portnumber);
-        
-        sb.append(" --passwordfile");
-        sb.append(" ");
-        sb.append(defPasswordFile);
-        sb.append(" ");
-        sb.append("multimode --file");
-        sb.append(" ");
+        sb.append(asadminbat);        
+        sb.append(" --port ");
+        sb.append(portnumber);        
+        sb.append(" --passwordfile ");        
+        sb.append(defPasswordFile);        
+        sb.append(" multimode --file ");        
         sb.append(comandFile.toString());
-        sb.append(" ");
-        //sb.append(" >> rrr.txt");
+        sb.append(" ");        
         
         
-        String folder = "c:/";
+        String folder = getWorkFolder();
 
         Path file = null;
         Path bat = null;
@@ -97,7 +106,7 @@ public class CommandBean {
             file = Paths.get(folder, "run.bat");
 
             Files.deleteIfExists(file);
-            bat = Files.createFile(file);         
+            bat = Files.createFile(file);        
             
             
             try(OutputStream bigOut = new BufferedOutputStream(Files.newOutputStream(bat))){
@@ -112,7 +121,42 @@ public class CommandBean {
         return bat;
     }
     
-   
+    private static String getCurShemaName(){
+        String res = "";
+        
+        return res;
+    }
+    
+    private static String getCurDbLink(){
+        String res = "";
+        
+        return res;
+    }
+    
+    private static List<String> getOptionShemaList(String domain){
+        List<String> res = new ArrayList<>();
+        res.add("sdfasdf");
+        res.add("asdfasdf");
+        res.add("asdfasdfasd");
+        res.add("asdfasd");
+        res.add("asdfasdf");
+        
+        return res;
+    }
+    
+    private static List<String> getOptionDbList(String domain){
+        List<String> res = new ArrayList<>();
+        
+        res.add("sdfasdf");
+        res.add("asdfasdf");
+        res.add("asdfasdfasd");
+        res.add("asdfasd");
+        res.add("asdfasdf");
+        
+        return res;
+    }
+    
+    
     
     
     public static void runComand(String comand){
@@ -176,12 +220,13 @@ public class CommandBean {
         
         StringBuilder sb = new StringBuilder();
         
-        List<String> optionShemaList = new ArrayList<>();
-        List<String> optionDbList = new ArrayList<>();
-        
         String domainName = getDomainName();
-        String curShemaName = "";
-        String curDbName = "";
+        List<String> optionShemaList = getOptionShemaList(domainName);
+        List<String> optionDbList = getOptionDbList(domainName);
+        
+        
+        String curShemaName = getCurShemaName();
+        String curDbName = getCurDbLink();
         
         for(String shi : optionShemaList){
             sb.append("delete-jvm-options -Dgkhconf.jvm.dbschema=");
@@ -199,19 +244,17 @@ public class CommandBean {
             sb.append("\r\n");
         }
         
-        // проставляем текущие опции
-        
+        // проставляем текущие опции        
         sb.append("create-jvm-options -Dgkhconf.jvm.dbaddress=");
         sb.append(curDbName);
-        sb.append("\r\n");
+        sb.append("\r\n");       
         
-        
-        //  jdbc\\:oracle\\:thin\\:@192\\.168\\.3\\.23\\:1521\\:db23
 
         sb.append("stop-domain ");
         sb.append(domainName); 
         sb.append("\r\n");
         sb.append("start-domain ");
+        sb.append(domainName); 
         sb.append("\r\n");         
         
         
@@ -220,16 +263,16 @@ public class CommandBean {
     
     private static String stopServer1(){
         
-        return "stop-domain";
+        return "stop-domain " + getDomainName();
     }
     
     private static String startServer2(){
         
-        return "start-domain";
+        return "start-domain " + getDomainName();
     }
     
     private static String reStartServer3(){
-        return "restart-domain";
+        return "restart-domain " + getDomainName();
     }
     
     private static String optionsServer4(){

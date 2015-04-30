@@ -138,6 +138,11 @@ public class Mainwindow extends javax.swing.JFrame {
         });
 
         jButton5.setText("Очистить команды");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -192,6 +197,10 @@ public class Mainwindow extends javax.swing.JFrame {
         
         CommandBean.runComand(comandtxt);        
     }//GEN-LAST:event_runComandBtnClk
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        jTextArea2.setText("");
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
