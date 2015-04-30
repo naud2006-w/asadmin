@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.denis.command.CommandBean;
+import ru.denis.db.DataBaseUtils;
 
 /**
  *
@@ -24,6 +25,10 @@ public class Asadmin {
      */
     public static void main(String[] args) {
         
+        System.out.print(System.getProperty("user.dir"));
+        
+        try {
+            DataBaseUtils du = DataBaseUtils.getInstance();
         
         Mainwindow mw = new Mainwindow();
         
@@ -34,6 +39,14 @@ public class Asadmin {
 //        } catch (InterruptedException ex) {
 //            Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
         
     }
     

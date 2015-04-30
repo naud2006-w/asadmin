@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.denis.asadmin.Asadmin;
+import ru.denis.db.DataBaseUtils;
 import ru.denis.utilits.AppConst;
 import static ru.denis.utilits.StringUtilits.isEmpty;
 
@@ -40,14 +41,30 @@ public class CommandBean {
         return "20048";
     }
     
-    private static String getAsadminBat(){
+    private static String getAsadminBat() throws Exception{
         
-        return "c:/glassfish4/bin/asadmin.bat";
+        DataBaseUtils db = DataBaseUtils.getInstance();
+        
+        String setn = db.getSettingByName("pathasadminbat");
+        
+        if(isEmpty(setn)){
+            throw new Exception("не заполенена настройка: " + AppConst.asadminbat);
+        }
+        
+        return setn;
     }
     
-    private static String getDefAdmPasswordFile(){
+    private static String getDefAdmPasswordFile() throws Exception{
         
-        return "c:/default.adminPassword.properties";
+        DataBaseUtils db = DataBaseUtils.getInstance();
+        
+        String setn = db.getSettingByName("defaultadminpass");
+        
+        if(isEmpty(setn)){
+            throw new Exception("не заполенена настройка: " + AppConst.defadmpasswordfile);
+        }
+        
+        return setn;
     }
     
     private static String getWorkFolder(){
@@ -79,7 +96,7 @@ public class CommandBean {
         return cmd;
     }
     
-    private static Path createBatFile(Path comandFile) {
+    private static Path createBatFile(Path comandFile) throws Exception {
         
         String defPasswordFile = getDefAdmPasswordFile();
         String asadminbat = getAsadminBat();
@@ -159,7 +176,7 @@ public class CommandBean {
     
     
     
-    public static void runComand(String comand){
+    public static void runComand(String comand) throws Exception{
         
         if(isEmpty(comand)){
             

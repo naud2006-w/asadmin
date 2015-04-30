@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Thu Apr 30 12:35:58 AST 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-014d-09ae-c6d7-00000eaf5080 
+on database directory C:\dataBaseJ\asadmin  with class loader sun.misc.Launcher$AppClassLoader@7cd76237 
+Loaded from file:/D:/GIT/asadmin/src/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_71-b14
+user.dir=D:\GIT\asadmin
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

@@ -27,6 +27,7 @@ public class AppConst {
                
     }
     
+    public static final String asadminbat = "Файл для запуска glassfish asadmin.bat";
     
-    
+    public static final String defadmpasswordfile = "Файл с паролем по умолчанию";
 }
