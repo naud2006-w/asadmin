@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.denis.asadmin.Asadmin;
+import ru.denis.asadmin.Mainwindow;
+import ru.denis.component.ConnectJDBCObject;
+import ru.denis.component.SchemaUsrObject;
 import ru.denis.db.DataBaseUtils;
 import ru.denis.utilits.AppConst;
 import static ru.denis.utilits.StringUtilits.isEmpty;
@@ -29,18 +32,7 @@ import static ru.denis.utilits.StringUtilits.isEmpty;
  * @author naumenko_ds
  */
 public class CommandBean {  
-    
-    
-    private static String getDomainName(){
-    
-        return "domain2";
-    }    
-    
-    private static String getPortnumber(){
         
-        return "20048";
-    }
-    
     private static String getAsadminBat() throws Exception{
         
         DataBaseUtils db = DataBaseUtils.getInstance();
@@ -96,18 +88,16 @@ public class CommandBean {
         return cmd;
     }
     
-    private static Path createBatFile(Path comandFile) throws Exception {
+    private static Path createBatFile(Path comandFile, String portNumber) throws Exception {
         
         String defPasswordFile = getDefAdmPasswordFile();
-        String asadminbat = getAsadminBat();
-        String portnumber = getPortnumber();       
-        
+        String asadminbat = getAsadminBat();        
         
         StringBuilder sb = new StringBuilder();
         
         sb.append(asadminbat);        
         sb.append(" --port ");
-        sb.append(portnumber);        
+        sb.append(portNumber);        
         sb.append(" --passwordfile ");        
         sb.append(defPasswordFile);        
         sb.append(" multimode --file ");        
@@ -137,38 +127,27 @@ public class CommandBean {
         
         return bat;
     }
-    
-    private static String getCurShemaName(){
-        String res = "";
+        
+    private static List<String> getOptionShemaList() throws Exception{
+        List<String> res = new ArrayList<>();        
+        
+        List<SchemaUsrObject> listObj = DataBaseUtils.getInstance().getListSchemaUsrObject();        
+        
+        for(SchemaUsrObject itemi : listObj){
+            res.add(itemi.getUsr());
+        }
         
         return res;
     }
     
-    private static String getCurDbLink(){
-        String res = "";
+    private static List<String> getOptionDbList() throws Exception{
+        List<String> res = new ArrayList<>();        
         
-        return res;
-    }
-    
-    private static List<String> getOptionShemaList(String domain){
-        List<String> res = new ArrayList<>();
-        res.add("sdfasdf");
-        res.add("asdfasdf");
-        res.add("asdfasdfasd");
-        res.add("asdfasd");
-        res.add("asdfasdf");
+        List<ConnectJDBCObject> listObj = DataBaseUtils.getInstance().getListObjectConnect();
         
-        return res;
-    }
-    
-    private static List<String> getOptionDbList(String domain){
-        List<String> res = new ArrayList<>();
-        
-        res.add("sdfasdf");
-        res.add("asdfasdf");
-        res.add("asdfasdfasd");
-        res.add("asdfasd");
-        res.add("asdfasdf");
+        for(ConnectJDBCObject itemi : listObj){
+            res.add(itemi.getLink());
+        }
         
         return res;
     }
@@ -176,7 +155,7 @@ public class CommandBean {
     
     
     
-    public static void runComand(String comand) throws Exception{
+    public static void runComand(String comand, Mainwindow window) throws Exception{
         
         if(isEmpty(comand)){
             
@@ -185,11 +164,13 @@ public class CommandBean {
             return;
         }
         
+        String domainName = window.getDomainName();
+        String portNumber = window.getDomainPort().toString();
         
         // если команда есть пробуем ее зарпустить        
         Path comandFille = CommandBean.createFileComands(comand);        
         
-        Path batFile = CommandBean.createBatFile(comandFille);
+        Path batFile = CommandBean.createBatFile(comandFille, portNumber);
         
         try {
             Process p = Runtime.getRuntime().exec("cmd /c " + batFile.toString());           
@@ -207,22 +188,22 @@ public class CommandBean {
         LoggerBean.writeLog("команда НЕ пустая");        
     }
     
-    public static String createCommand(String listelement){
+    public static String createCommand(String listelement, Mainwindow window) throws Exception{
         
         String rez = "";
         
         String[] command = AppConst.listCommand;
         
         if(listelement.equals(command[0])){
-            rez = changeOption0();
+            rez = changeOption0(window);
         }else if(listelement.equals(command[1])){
-            rez = stopServer1();
+            rez = stopServer1(window);
         }else if(listelement.equals(command[2])){
-            rez = startServer2();
+            rez = startServer2(window);
         }else if(listelement.equals(command[3])){
-            rez = reStartServer3();
+            rez = reStartServer3(window);
         }else if(listelement.equals(command[4])){
-            rez = optionsServer4();
+            rez = optionsServer4(window);
         }      
         
         
@@ -233,19 +214,19 @@ public class CommandBean {
      * 0 элемент
      * @return 
      */
-    private static String changeOption0(){
+    private static String changeOption0(Mainwindow window) throws Exception{
         
         StringBuilder sb = new StringBuilder();
         
-        String domainName = getDomainName();
-        List<String> optionShemaList = getOptionShemaList(domainName);
-        List<String> optionDbList = getOptionDbList(domainName);
+        String domainName = window.getDomainName();
+        List<String> optionSchemaList = getOptionShemaList();
+        List<String> optionDbList = getOptionDbList();
         
         
-        String curShemaName = getCurShemaName();
-        String curDbName = getCurDbLink();
+        String curShemaName = window.getCurShemaName();
+        String curDbName = window.getCurDbLink();
         
-        for(String shi : optionShemaList){
+        for(String shi : optionSchemaList){
             sb.append("delete-jvm-options -Dgkhconf.jvm.dbschema=");
             sb.append(shi);
             sb.append("\r\n");
@@ -278,21 +259,21 @@ public class CommandBean {
         return sb.toString();
     }
     
-    private static String stopServer1(){
+    private static String stopServer1(Mainwindow window){
         
-        return "stop-domain " + getDomainName();
+        return "stop-domain " + window.getDomainName();
     }
     
-    private static String startServer2(){
+    private static String startServer2(Mainwindow window){
         
-        return "start-domain " + getDomainName();
+        return "start-domain " + window.getDomainName();
     }
     
-    private static String reStartServer3(){
-        return "restart-domain " + getDomainName();
+    private static String reStartServer3(Mainwindow window){
+        return "restart-domain " + window.getDomainName();
     }
     
-    private static String optionsServer4(){
+    private static String optionsServer4(Mainwindow window){
         return "list-jvm-options";
     }
 }

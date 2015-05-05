@@ -5,7 +5,15 @@
  */
 package ru.denis.asadmin;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ru.denis.command.CommandBean;
+import ru.denis.component.ConnectJDBCObject;
+import ru.denis.component.DomainGFCBoxModel;
+import ru.denis.component.DomainGFObject;
+import ru.denis.component.JDBCConnectCBoxModel;
+import ru.denis.component.SchemaUsrCBoxModel;
+import ru.denis.component.SchemaUsrObject;
 import ru.denis.utilits.AppConst;
 
 /**
@@ -18,9 +26,43 @@ public class Mainwindow extends javax.swing.JFrame {
      * Creates new form Mainwindow
      */
     public Mainwindow() {
+        model1 = new SchemaUsrCBoxModel();
+        model1.setDataSource();
+        
+        model2 = new JDBCConnectCBoxModel();
+        model2.setDataSource();
+        
+        model3 = new DomainGFCBoxModel();
+        model3.setDataSource();
+        
         initComponents();
     }
 
+    public String getCurDbLink(){
+        
+        ConnectJDBCObject jo = (ConnectJDBCObject) jComboBox2.getSelectedItem();
+        
+        return jo.getLink();
+    }
+    
+    public String getDomainName() {
+        DomainGFObject jo = (DomainGFObject)jComboBox3.getSelectedItem();
+        
+        return jo.getName();
+    }
+    
+    public Integer getDomainPort() {
+        DomainGFObject jo = (DomainGFObject)jComboBox3.getSelectedItem();
+        
+        return jo.getPort();
+    }
+    
+    public String getCurShemaName() {
+        SchemaUsrObject jo = (SchemaUsrObject)jComboBox1.getSelectedItem();
+        
+        return jo.getUsr();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,6 +83,8 @@ public class Mainwindow extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
@@ -53,9 +97,9 @@ public class Mainwindow extends javax.swing.JFrame {
         jPanel1.setMinimumSize(new java.awt.Dimension(300, 100));
         jPanel1.setPreferredSize(new java.awt.Dimension(300, 555));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(model1);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(model2);
 
         jLabel1.setText("Настройка GF ( -Dgkhconf.jvm.dbschema )");
 
@@ -80,6 +124,10 @@ public class Mainwindow extends javax.swing.JFrame {
 
         jButton2.setText("i");
 
+        jLabel4.setText("Параметры домена GF ( наименование:порт )");
+
+        jComboBox3.setModel(model3);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -96,7 +144,9 @@ public class Mainwindow extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -106,7 +156,11 @@ public class Mainwindow extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(42, 42, 42)
+                .addGap(28, 28, 28)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -118,7 +172,7 @@ public class Mainwindow extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addGap(81, 81, 81))
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -187,7 +241,11 @@ public class Mainwindow extends javax.swing.JFrame {
         // если двойной клик то работаем
         if(evt.getClickCount() == 2){           
             
-            jTextArea2.setText(CommandBean.createCommand((String) jList1.getSelectedValue()));            
+            try {            
+                jTextArea2.setText(CommandBean.createCommand((String) jList1.getSelectedValue(), this));
+            } catch (Exception ex) {
+                Logger.getLogger(Mainwindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_dblClickList
 
@@ -195,13 +253,24 @@ public class Mainwindow extends javax.swing.JFrame {
         
         String comandtxt = jTextArea2.getText();        
         
-        CommandBean.runComand(comandtxt);        
+        try {        
+            CommandBean.runComand(comandtxt, this);
+        } catch (Exception ex) {
+            Logger.getLogger(Mainwindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_runComandBtnClk
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         jTextArea2.setText("");
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    /**
+     * Мои переменные.
+     */
+    private JDBCConnectCBoxModel model2;
+    private DomainGFCBoxModel model3;
+    private SchemaUsrCBoxModel model1;
+    
     /**
      * @param args the command line arguments
      */
@@ -214,9 +283,11 @@ public class Mainwindow extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -225,4 +296,6 @@ public class Mainwindow extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables
+
+   
 }
