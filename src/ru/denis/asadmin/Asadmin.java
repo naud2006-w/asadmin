@@ -5,21 +5,33 @@
  */
 package ru.denis.asadmin;
 
+import java.awt.AWTException;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import ru.denis.command.CommandBean;
 import ru.denis.db.DataBaseUtils;
+import ru.denis.utilits.AppConstants;
 
 /**
  *
  * @author naumenko_ds
  */
 public class Asadmin {
-
+    
+    private static TrayIcon trayIcon;
+    
     /**
      * @param args the command line arguments
      */
@@ -28,26 +40,64 @@ public class Asadmin {
         System.out.print(System.getProperty("user.dir"));
         
         try {
-            DataBaseUtils du = DataBaseUtils.getInstance();
-        
-        Mainwindow mw = new Mainwindow();
-        
-        mw.show();
-        
-//        try {
-//            CommandBean.runComand();
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
+            // готовим рабочие директории
+            CommandBean.initWorkFolder();
+            
+            DataBaseUtils du = DataBaseUtils.getInstance();            
+
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new MainWindow().setVisible(true);                
+                }
+            });
+
+            setTrayIcon();        
             
         } catch (Exception ex) {
             Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
-        
+        }        
     }
+    
+    
+    // помещаем в трей значек
+    private static void setTrayIcon() {
+        if(! SystemTray.isSupported() ) {
+          return;
+        }
+
+        PopupMenu trayMenu = new PopupMenu();
+        MenuItem item = new MenuItem("Выйти");
+        item.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+          }
+        });
+        trayMenu.add(item);
+
+        URL imageURL = Asadmin.class.getResource("images/gf.png");//("images/calendar.png");
+
+        ImageIcon icon = new ImageIcon(imageURL);
+        
+        
+        trayIcon = new TrayIcon(icon.getImage(), AppConstants.APP_NAME, trayMenu);
+        trayIcon.setImageAutoSize(true);
+
+        SystemTray tray = SystemTray.getSystemTray();
+        try {
+          tray.add(trayIcon);
+        } catch (AWTException e) {
+          e.printStackTrace();
+        }
+
+        trayIcon.displayMessage(AppConstants.APP_NAME, "Программа запущенна!",
+                                TrayIcon.MessageType.INFO);
+    }
+
+    public static TrayIcon getTrayIcon() {
+        return trayIcon;
+    }
+    
     
 }

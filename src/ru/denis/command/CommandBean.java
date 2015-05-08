@@ -6,6 +6,7 @@
 package ru.denis.command;
 
 
+import java.awt.TrayIcon;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,11 +21,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.denis.asadmin.Asadmin;
-import ru.denis.asadmin.Mainwindow;
+import ru.denis.asadmin.MainWindow;
 import ru.denis.component.ConnectJDBCObject;
 import ru.denis.component.SchemaUsrObject;
 import ru.denis.db.DataBaseUtils;
-import ru.denis.utilits.AppConst;
+import ru.denis.utilits.AppConstants;
 import static ru.denis.utilits.StringUtilits.isEmpty;
 
 /**
@@ -32,7 +33,10 @@ import static ru.denis.utilits.StringUtilits.isEmpty;
  * @author naumenko_ds
  */
 public class CommandBean {  
-        
+    
+    private static Path appFolder;
+    private static Path runFolder;
+    
     private static String getAsadminBat() throws Exception{
         
         DataBaseUtils db = DataBaseUtils.getInstance();
@@ -40,7 +44,7 @@ public class CommandBean {
         String setn = db.getSettingByName("pathasadminbat");
         
         if(isEmpty(setn)){
-            throw new Exception("не заполенена настройка: " + AppConst.asadminbat);
+            throw new Exception("не заполенена настройка: " + AppConstants.asadminbat);
         }
         
         return setn;
@@ -53,26 +57,19 @@ public class CommandBean {
         String setn = db.getSettingByName("defaultadminpass");
         
         if(isEmpty(setn)){
-            throw new Exception("не заполенена настройка: " + AppConst.defadmpasswordfile);
+            throw new Exception("не заполенена настройка: " + AppConstants.defadmpasswordfile);
         }
         
         return setn;
-    }
-    
-    private static String getWorkFolder(){
-        
-        String wf = Paths.get("c://").toString();
-        
-        return wf;
-    }
+    }    
     
     private static Path createFileComands(String txt){
         
         Path cmd = null;
         try{
-            String folder = getWorkFolder();
+            
 
-            Path path = Paths.get(folder, "comand.txt");
+            Path path = Paths.get(runFolder.toString(), "comand.txt");
 
             Files.deleteIfExists(path);
             
@@ -105,7 +102,7 @@ public class CommandBean {
         sb.append(" ");        
         
         
-        String folder = getWorkFolder();
+        String folder = runFolder.toString();
 
         Path file = null;
         Path bat = null;
@@ -155,7 +152,7 @@ public class CommandBean {
     
     
     
-    public static void runComand(String comand, Mainwindow window) throws Exception{
+    public static void runComand(String comand, MainWindow window) throws Exception{
         
         if(isEmpty(comand)){
             
@@ -179,8 +176,20 @@ public class CommandBean {
             String s;
             while((s = bufferedReader.readLine()) != null) System.out.println(s);
             
-            p.exitValue();
+            int endCode = p.exitValue();
+            
+            if(endCode == 0){
+                Asadmin.getTrayIcon().displayMessage(AppConstants.APP_NAME, "Команда выполнена успешно!",
+                                    TrayIcon.MessageType.INFO);
+            }else{
+                Asadmin.getTrayIcon().displayMessage(AppConstants.APP_NAME, "Ошибка при выполнении команды.",
+                                TrayIcon.MessageType.ERROR);
+            }
         } catch (IOException ex) {
+            
+            Asadmin.getTrayIcon().displayMessage(AppConstants.APP_NAME, "Ошибка при выполнении команды.",
+                                TrayIcon.MessageType.ERROR);
+            
             System.out.println(ex.getMessage());
             Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -188,11 +197,11 @@ public class CommandBean {
         LoggerBean.writeLog("команда НЕ пустая");        
     }
     
-    public static String createCommand(String listelement, Mainwindow window) throws Exception{
+    public static String createCommand(String listelement, MainWindow window) throws Exception{
         
         String rez = "";
         
-        String[] command = AppConst.listCommand;
+        String[] command = AppConstants.listCommand;
         
         if(listelement.equals(command[0])){
             rez = changeOption0(window);
@@ -214,7 +223,7 @@ public class CommandBean {
      * 0 элемент
      * @return 
      */
-    private static String changeOption0(Mainwindow window) throws Exception{
+    private static String changeOption0(MainWindow window) throws Exception{
         
         StringBuilder sb = new StringBuilder();
         
@@ -259,21 +268,50 @@ public class CommandBean {
         return sb.toString();
     }
     
-    private static String stopServer1(Mainwindow window){
+    private static String stopServer1(MainWindow window){
         
         return "stop-domain " + window.getDomainName();
     }
     
-    private static String startServer2(Mainwindow window){
+    private static String startServer2(MainWindow window){
         
         return "start-domain " + window.getDomainName();
     }
     
-    private static String reStartServer3(Mainwindow window){
+    private static String reStartServer3(MainWindow window){
         return "restart-domain " + window.getDomainName();
     }
     
-    private static String optionsServer4(Mainwindow window){
+    private static String optionsServer4(MainWindow window){
         return "list-jvm-options";
+    }
+    
+    
+    
+    public static void initWorkFolder() throws IOException{
+        appFolder = Paths.get(System.getProperty("user.home"), "AppData", "Local", "asadminj");
+        runFolder = Paths.get(appFolder.toString(), "run");
+        
+        if(Files.notExists(appFolder)){
+        
+            Path p = Files.createDirectory(appFolder);
+        }
+        
+        if(Files.notExists(runFolder)){
+        
+            Path p = Files.createDirectory(runFolder);
+        }
+    }
+    
+    public static Path getAppFolder() {
+        return appFolder;
+    }
+
+    public static Path getRunFolder() {
+        return runFolder;
+    }
+    
+    public void test(){
+        
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author naumenko_ds
  */
-public class AppConst {
+public class AppConstants {
     
     // Список доступных команд
     public static final String[] listCommand = new String[]{
@@ -23,9 +23,11 @@ public class AppConst {
                     "Опции сервера (jvm-options-list)"
                 };    
 
-    public AppConst() {        
+    public AppConstants() {        
                
     }
+    
+    public static final String APP_NAME = "asadminj";
     
     public static final String asadminbat = "Файл для запуска glassfish asadmin.bat";
     

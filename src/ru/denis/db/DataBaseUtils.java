@@ -1,6 +1,10 @@
 
 package ru.denis.db;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ru.denis.command.CommandBean;
 import ru.denis.command.LoggerBean;
 import ru.denis.component.ConnectJDBCObject;
 import ru.denis.component.DomainGFObject;
@@ -27,6 +32,8 @@ public class DataBaseUtils {
     private String url = "";
     private Connection con = null;
     
+    
+    
     /**
      * Конструктор.
      * 
@@ -35,7 +42,7 @@ public class DataBaseUtils {
     public DataBaseUtils() throws Exception {
         
         
-        try{                       
+        try{            
             this.url = "jdbc:derby:"+ getDataBaseFolder() +";create=true" ;
             
             // получаем коннект
@@ -60,7 +67,14 @@ public class DataBaseUtils {
     }
     
     
-    
+    private String getDataBaseFolder(){
+        
+        //C:\Users\naumenko_ds\AppData\Local\asadminj
+        
+        Path dbfolder = Paths.get(CommandBean.getAppFolder().toString(), "db");                               
+                
+        return dbfolder.toString();
+    }
     
     public static synchronized DataBaseUtils getInstance() throws Exception{
         if(instance == null){
@@ -92,11 +106,6 @@ public class DataBaseUtils {
     }
     
     
-    
-    private String getDataBaseFolder(){
-        
-        return "c:/dataBaseJ/asadmin";
-    }
     
     private void initSettingsProgram() throws Exception{       
         
@@ -285,7 +294,7 @@ public class DataBaseUtils {
         
         Connection conL = null;
                 
-        String sql = "select value from SYSTEM_SETTING where name_sys  = " + name;
+        String sql = "select value from SYSTEM_SETTING where name_sys  = '" + name + "'";
         
         Statement stmt = null;
         ResultSet res = null;
@@ -426,6 +435,5 @@ public class DataBaseUtils {
         }        
         
         return res;
-    }
-    
+    } 
 }

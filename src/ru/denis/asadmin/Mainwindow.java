@@ -7,6 +7,7 @@ package ru.denis.asadmin;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import ru.denis.command.CommandBean;
 import ru.denis.component.ConnectJDBCObject;
 import ru.denis.component.DomainGFCBoxModel;
@@ -14,18 +15,18 @@ import ru.denis.component.DomainGFObject;
 import ru.denis.component.JDBCConnectCBoxModel;
 import ru.denis.component.SchemaUsrCBoxModel;
 import ru.denis.component.SchemaUsrObject;
-import ru.denis.utilits.AppConst;
+import ru.denis.utilits.AppConstants;
 
 /**
  *
  * @author naumenko_ds
  */
-public class Mainwindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form Mainwindow
      */
-    public Mainwindow() {
+    public MainWindow() {
         model1 = new SchemaUsrCBoxModel();
         model1.setDataSource();
         
@@ -36,6 +37,8 @@ public class Mainwindow extends javax.swing.JFrame {
         model3.setDataSource();
         
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     public String getCurDbLink(){
@@ -92,7 +95,10 @@ public class Mainwindow extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("asadmin");
+        setTitle("asadminj");
+        setIconImage(new ImageIcon(Asadmin.class.getResource("images/gf.png")).getImage()
+
+        );
 
         jPanel1.setMinimumSize(new java.awt.Dimension(300, 100));
         jPanel1.setPreferredSize(new java.awt.Dimension(300, 555));
@@ -106,7 +112,7 @@ public class Mainwindow extends javax.swing.JFrame {
         jLabel2.setText("Сервер БД  ( -Dgkhconf.jvm.dbaddress )");
 
         jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = AppConst.listCommand;
+            String[] strings = ru.denis.utilits.AppConstants.listCommand;
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -121,8 +127,18 @@ public class Mainwindow extends javax.swing.JFrame {
         jLabel3.setText("Список команд");
 
         jButton1.setText("Настройка программы");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("i");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Параметры домена GF ( наименование:порт )");
 
@@ -190,6 +206,11 @@ public class Mainwindow extends javax.swing.JFrame {
                 runComandBtnClk(evt);
             }
         });
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Очистить команды");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -205,7 +226,7 @@ public class Mainwindow extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -227,7 +248,7 @@ public class Mainwindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 939, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,7 +265,7 @@ public class Mainwindow extends javax.swing.JFrame {
             try {            
                 jTextArea2.setText(CommandBean.createCommand((String) jList1.getSelectedValue(), this));
             } catch (Exception ex) {
-                Logger.getLogger(Mainwindow.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_dblClickList
@@ -256,13 +277,43 @@ public class Mainwindow extends javax.swing.JFrame {
         try {        
             CommandBean.runComand(comandtxt, this);
         } catch (Exception ex) {
-            Logger.getLogger(Mainwindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_runComandBtnClk
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         jTextArea2.setText("");
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new About().setVisible(true);                
+                }
+            });
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       
+        final MainWindow mw = this;
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    SettingWindow sw = new SettingWindow();
+                    sw.setMainWindow(mw);
+                    sw.setVisible(true);                
+                }
+            });
+       
+       this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * Мои переменные.
