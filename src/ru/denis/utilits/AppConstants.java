@@ -20,7 +20,8 @@ public class AppConstants {
                     "Стоп сервера",
                     "Старт серврера",
                     "Рестарт сервера",
-                    "Опции сервера (jvm-options-list)"
+                    "Опции сервера (jvm-options-list)",
+                    "Состояние домена(ов)"
                 };    
 
     public AppConstants() {        

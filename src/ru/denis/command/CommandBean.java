@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 import ru.denis.asadmin.Asadmin;
 import ru.denis.asadmin.MainWindow;
 import ru.denis.component.ConnectJDBCObject;
@@ -154,9 +155,11 @@ public class CommandBean {
     
     public static void runComand(String comand, MainWindow window) throws Exception{
         
+        JTextArea logComponent = window.getLogComponent();
+        
         if(isEmpty(comand)){
             
-            LoggerBean.writeLog("Команда пустая!!!!");
+            LoggerBean.writeLogText(logComponent,  "Команда пустая!!!!");
             
             return;
         }
@@ -174,7 +177,13 @@ public class CommandBean {
             
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String s;
-            while((s = bufferedReader.readLine()) != null) System.out.println(s);
+            
+            while((s = bufferedReader.readLine()) != null){
+                
+                LoggerBean.writeLogText(logComponent, s);
+                
+                System.out.println(s);
+            } 
             
             int endCode = p.exitValue();
             
@@ -185,6 +194,10 @@ public class CommandBean {
                 Asadmin.getTrayIcon().displayMessage(AppConstants.APP_NAME, "Ошибка при выполнении команды.",
                                 TrayIcon.MessageType.ERROR);
             }
+            
+            window.getRunButton().setEnabled(true);
+            window.setIsRunCommand(false);
+            
         } catch (IOException ex) {
             
             Asadmin.getTrayIcon().displayMessage(AppConstants.APP_NAME, "Ошибка при выполнении команды.",
@@ -192,9 +205,8 @@ public class CommandBean {
             
             System.out.println(ex.getMessage());
             Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }        
         
-        LoggerBean.writeLog("команда НЕ пустая");        
     }
     
     public static String createCommand(String listelement, MainWindow window) throws Exception{
@@ -213,6 +225,8 @@ public class CommandBean {
             rez = reStartServer3(window);
         }else if(listelement.equals(command[4])){
             rez = optionsServer4(window);
+        }else if(listelement.equals(command[5])){
+            rez = optionsServer5(window);
         }      
         
         
@@ -286,6 +300,9 @@ public class CommandBean {
         return "list-jvm-options";
     }
     
+    private static String optionsServer5(MainWindow window){
+        return "list-domains";
+    }
     
     
     public static void initWorkFolder() throws IOException{

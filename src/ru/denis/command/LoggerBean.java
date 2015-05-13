@@ -5,6 +5,9 @@
  */
 package ru.denis.command;
 
+
+import javax.swing.JTextArea;
+
 /**
  *
  * @author naumenko_ds
@@ -15,4 +18,12 @@ public class LoggerBean {
         System.out.println(txt);
     }
     
+    
+    public static void writeLogText(JTextArea ta, String text){
+        ta.append(text);
+        ta.append("\r\n");
+        
+        // прокручиваем текст к низу
+        ta.setCaretPosition(ta.getText().length());
+    }
 }
