@@ -42,13 +42,13 @@ public class CommandBean {
         
         DataBaseUtils db = DataBaseUtils.getInstance();
         
-        String setn = db.getSettingByName("pathasadminbat");
+        String setn = db.getSettingByName("pathglassfish");
         
         if(isEmpty(setn)){
-            throw new Exception("не заполенена настройка: " + AppConstants.asadminbat);
+            throw new Exception("не заполенена настройка: " + AppConstants.pathglassfish);
         }
         
-        return setn;
+        return setn + AppConstants.ASADMIN_FILE_NAME;
     }
     
     private static String getDefAdmPasswordFile() throws Exception{
@@ -261,6 +261,7 @@ public class CommandBean {
         
         for(String dbi : optionDbList){
             sb.append("delete-jvm-options -Dgkhconf.jvm.dbaddress=");
+            
             sb.append(dbi);
             sb.append("\r\n");
         }

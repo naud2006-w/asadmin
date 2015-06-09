@@ -26,7 +26,7 @@ public class ConnectJDBCObject {
     }
 
     public String getLink() {
-        return link;
+        return encodeLink(link);
     }
 
     @Override
@@ -57,6 +57,13 @@ public class ConnectJDBCObject {
         return true;
     }
     
-    
+    private String encodeLink(String link){
+        
+        // : -> \\:
+        // . -> \\.       
+        
+        
+        return link.replaceAll("\\.", "\\\\\\\\.").replaceAll("\\:", "\\\\\\\\:");
+    }
     
 }

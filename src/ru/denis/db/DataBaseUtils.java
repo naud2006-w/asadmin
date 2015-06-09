@@ -135,7 +135,7 @@ public class DataBaseUtils {
                 conL.commit();
                 
                 // первоначальное заполнение данными
-                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (1, 'pathasadminbat', 'Файл asadmin.bat', 'c:\\glassfish4\\bin\\asadmin.bat', 'файл с утилитой для glassfisha')");
+                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (1, 'pathglassfish', 'Каталог сервера Glassfish', 'c:\\glassfish4', 'Каталог сервера Glassfish')");
                 executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (2, 'defaultadminpass', 'Файл с паролем админа', 'd:\\default.adminPassword.properties', 'файл с паролем админа' )");                               
            } 
         }catch(Exception e){
@@ -180,6 +180,7 @@ public class DataBaseUtils {
                 executeInsertQuery(" insert into JDBC_LINK(name, link) values ('Новгород xe', 'jdbc:oracle:thin:@192.168.3.29:1521:xe')");
                 executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ssh Краснодар localhost:21521:krasdb', 'jdbc:oracle:thin:@localhost:21521:krasdb')");
                 executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ssh Мурманск localhost:21521:murdb', 'jdbc:oracle:thin:@localhost:21521:murdb')");
+                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ЛПР 3.30', 'jdbc:oracle:thin:@192.168.3.30:1521:murdb')");
            } 
         }catch(Exception e){
             throw new Exception("Ошибка при создании таблицы для хранения серверов.");
@@ -261,6 +262,7 @@ public class DataBaseUtils {
                 executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('candidate_test', 'candidate_test', 'candidate_test')");
                 executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('novgorod_prod', 'novgorod_prod', 'novgorod_prod')");
                 executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('release_test', 'release_test', 'release_test')");
+                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('murmansk_prod0430', 'murmansk_prod0430', 'murmansk_prod0430')");
            } 
         }catch(Exception e){
             throw new Exception("Ошибка при создании таблицы для хранения информации о схемах пользователя.");

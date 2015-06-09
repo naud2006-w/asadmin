@@ -32,5 +32,9 @@ public class AppConstants {
     
     public static final String asadminbat = "Файл для запуска glassfish asadmin.bat";
     
+    public static final String pathglassfish = "Каталог установки Glassfish";
+    
     public static final String defadmpasswordfile = "Файл с паролем по умолчанию";
+    
+    public static final String ASADMIN_FILE_NAME = "\\bin\\asadmin.bat";
 }
