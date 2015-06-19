@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Jun 09 18:16:31 AST 2015:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-014d-d8e4-ec84-00000eb03f10 
+Fri Jun 19 12:52:43 AST 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-014e-0b3c-12be-00000eb06648 
 on database directory C:\Users\naumenko_ds\AppData\Local\asadminj\db  with class loader sun.misc.Launcher$AppClassLoader@207148e9 
 Loaded from file:/D:/GIT/asadmin/src/lib/derby.jar
 java.vendor=Oracle Corporation
