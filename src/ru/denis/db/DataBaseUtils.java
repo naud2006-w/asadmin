@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.denis.command.CommandBean;
 import ru.denis.command.LoggerBean;
-import ru.denis.component.ConnectJDBCObject;
+import ru.denis.component.JDBCConnectObject;
 import ru.denis.component.DomainGFObject;
 import ru.denis.component.SchemaUsrObject;
 
@@ -319,14 +319,12 @@ public class DataBaseUtils {
         } 
         
         return resStr;
-    }
-    
-    
-    
+    }   
+   
     
     //**** для комбобокса со списком подключений
-    public List<ConnectJDBCObject> getListObjectConnect(){
-        List<ConnectJDBCObject> res = new ArrayList<>();
+    public List<JDBCConnectObject> getListObjectConnect(){
+        List<JDBCConnectObject> res = new ArrayList<>();
         
         Connection conL = null;
                 
@@ -343,7 +341,7 @@ public class DataBaseUtils {
             resSql = stmt.executeQuery(sql);                     
 
             while(resSql.next()){
-                ConnectJDBCObject jo = new ConnectJDBCObject(resSql.getString("name"), resSql.getString("link")); 
+                JDBCConnectObject jo = new JDBCConnectObject(resSql.getString("name"), resSql.getString("link")); 
                 
                 res.add(jo);
             }         

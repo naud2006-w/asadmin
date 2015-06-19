@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import ru.denis.command.CommandBean;
 import ru.denis.command.LoggerBean;
-import ru.denis.component.ConnectJDBCObject;
+import ru.denis.component.JDBCConnectObject;
 import ru.denis.component.DomainGFCBoxModel;
 import ru.denis.component.DomainGFObject;
 import ru.denis.component.JDBCConnectCBoxModel;
@@ -47,9 +47,9 @@ public class MainWindow extends javax.swing.JFrame {
 
     public String getCurDbLink(){
         
-        ConnectJDBCObject jo = (ConnectJDBCObject) jComboBox2.getSelectedItem();
+        JDBCConnectObject jo = (JDBCConnectObject) jComboBox2.getSelectedItem();
         
-        return jo.getLink();
+        return jo.getEncodeLink();
     }
     
     public String getDomainName() {

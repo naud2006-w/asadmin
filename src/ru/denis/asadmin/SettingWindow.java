@@ -5,6 +5,16 @@
  */
 package ru.denis.asadmin;
 
+import java.util.ArrayList;
+import java.util.List;
+import ru.denis.command.ComponentCommBean;
+import ru.denis.component.DomainGFObject;
+import ru.denis.component.JDBCConnectObject;
+import ru.denis.component.SchemaUsrObject;
+import ru.denis.component.winsettings.DataBaseTableModel;
+import ru.denis.component.winsettings.GlassFishTableModel;
+import ru.denis.component.winsettings.JDBCConnectTableModel;
+
 /**
  *
  * @author naumenko_ds
@@ -15,6 +25,20 @@ public class SettingWindow extends javax.swing.JFrame {
      * Creates new form SettingWindow
      */
     public SettingWindow() {
+        
+        compCommandBean = new ComponentCommBean();
+        
+        // заполняем данными структуры для модели таблиц
+        listGFObj = compCommandBean.fillGFdomains();
+        listDBObj = compCommandBean.fillDBlist();
+        listJDBCObj = compCommandBean.fillJDBCLink();
+                
+        // создаем модели
+        gfModel = new GlassFishTableModel(listGFObj);
+        dbModel = new DataBaseTableModel(listDBObj);
+        connJDBCModel = new JDBCConnectTableModel(listJDBCObj);
+        
+        // все остальгые компоненты
         initComponents();
         
         this.setLocationRelativeTo(null);
@@ -36,7 +60,11 @@ public class SettingWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Настройка параметров программы");
@@ -46,17 +74,7 @@ public class SettingWindow extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Название", "Пользователь", "Пароль"
-            }
-        ));
+        jTable1.setModel(this.gfModel);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Заведенные");
@@ -95,36 +113,54 @@ public class SettingWindow extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
-                .addContainerGap(100, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Glassfish", jPanel1);
+
+        jTable2.setModel(this.connJDBCModel);
+        jScrollPane2.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 844, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(226, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Базы данных", jPanel2);
+
+        jTable3.setModel(this.dbModel);
+        jScrollPane3.setViewportView(jTable3);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 844, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Схемы(пользователи)", jPanel3);
@@ -157,6 +193,16 @@ public class SettingWindow extends javax.swing.JFrame {
 
     private MainWindow mainWindow = null;
     
+    private ComponentCommBean compCommandBean;
+    private GlassFishTableModel gfModel;
+    private DataBaseTableModel dbModel;
+    private JDBCConnectTableModel connJDBCModel;  
+    private List<DomainGFObject> listGFObj;
+    private List<SchemaUsrObject> listDBObj;
+    private List<JDBCConnectObject> listJDBCObj;
+                    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -164,7 +210,11 @@ public class SettingWindow extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     // End of variables declaration//GEN-END:variables
 }

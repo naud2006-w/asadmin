@@ -30,9 +30,9 @@ public class JDBCConnectCBoxModel extends DefaultComboBoxModel {
         try {
             dbu = DataBaseUtils.getInstance();
             
-            List<ConnectJDBCObject> listelement = dbu.getListObjectConnect();
+            List<JDBCConnectObject> listelement = dbu.getListObjectConnect();
         
-            for(ConnectJDBCObject itemi : listelement){
+            for(JDBCConnectObject itemi : listelement){
                 addElement(itemi);
             }           
             

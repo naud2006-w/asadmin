@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import ru.denis.asadmin.Asadmin;
 import ru.denis.asadmin.MainWindow;
-import ru.denis.component.ConnectJDBCObject;
+import ru.denis.component.JDBCConnectObject;
 import ru.denis.component.SchemaUsrObject;
 import ru.denis.db.DataBaseUtils;
 import ru.denis.utilits.AppConstants;
@@ -141,10 +141,10 @@ public class CommandBean {
     private static List<String> getOptionDbList() throws Exception{
         List<String> res = new ArrayList<>();        
         
-        List<ConnectJDBCObject> listObj = DataBaseUtils.getInstance().getListObjectConnect();
+        List<JDBCConnectObject> listObj = DataBaseUtils.getInstance().getListObjectConnect();
         
-        for(ConnectJDBCObject itemi : listObj){
-            res.add(itemi.getLink());
+        for(JDBCConnectObject itemi : listObj){
+            res.add(itemi.getEncodeLink());
         }
         
         return res;

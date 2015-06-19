@@ -11,12 +11,12 @@ import java.util.Objects;
  *
  * @author naumenko_ds
  */
-public class ConnectJDBCObject {
+public class JDBCConnectObject {
     
     private String name;
     private String link;
 
-    public ConnectJDBCObject(String name, String link) {
+    public JDBCConnectObject(String name, String link) {
         this.name = name;
         this.link = link;
     }
@@ -26,9 +26,13 @@ public class ConnectJDBCObject {
     }
 
     public String getLink() {
-        return encodeLink(link);
+        return link;
     }
 
+    public String getEncodeLink() {
+        return encodeLink(link);
+    }
+    
     @Override
     public String toString() {
         return name;
@@ -50,7 +54,7 @@ public class ConnectJDBCObject {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ConnectJDBCObject other = (ConnectJDBCObject) obj;
+        final JDBCConnectObject other = (JDBCConnectObject) obj;
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
