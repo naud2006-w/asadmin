@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import ru.denis.command.CommandBean;
 import ru.denis.command.LoggerBean;
@@ -19,7 +18,7 @@ import ru.denis.component.DomainGFObject;
 import ru.denis.component.JDBCConnectCBoxModel;
 import ru.denis.component.SchemaUsrCBoxModel;
 import ru.denis.component.SchemaUsrObject;
-import ru.denis.utilits.AppConstants;
+
 
 /**
  *
