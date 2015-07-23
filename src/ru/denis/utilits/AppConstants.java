@@ -16,12 +16,13 @@ public class AppConstants {
     
     // Список доступных команд
     public static final String[] listCommand = new String[]{
-                    "Запуск сервера с переменными",
+                    "*Установка переменных -JVMOptions",
                     "Стоп сервера",
                     "Старт серврера",
                     "Рестарт сервера",
                     "Опции сервера (jvm-options-list)",
-                    "Состояние домена(ов)"
+                    "Состояние домена(ов)",
+                    "Удаление приложения",
                 };    
 
     public AppConstants() {        
@@ -36,5 +37,12 @@ public class AppConstants {
     
     public static final String defadmpasswordfile = "Файл с паролем по умолчанию";
     
+    public static final String app_name_gkh = "название приложения на сервере для удаления";
+    
     public static final String ASADMIN_FILE_NAME = "\\bin\\asadmin.bat";
+    
+    
+    public static final String sn_pathglassfish = "pathglassfish";
+    public static final String sn_defadmpasswordfile = "defaultadminpass";
+    public static final String sn_app_name_gkh = "web";
 }

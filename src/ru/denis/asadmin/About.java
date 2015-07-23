@@ -49,7 +49,7 @@ public class About extends javax.swing.JFrame {
 
         jLabel1.setText("Версия :");
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("1.0");
 
         jLabel3.setText("О программе");
 

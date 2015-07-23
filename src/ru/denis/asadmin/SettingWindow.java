@@ -5,13 +5,18 @@
  */
 package ru.denis.asadmin;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import ru.denis.command.ComponentCommBean;
 import ru.denis.component.DomainGFObject;
 import ru.denis.component.JDBCConnectObject;
 import ru.denis.component.SchemaUsrObject;
 import ru.denis.component.winsettings.DataBaseTableModel;
+import ru.denis.component.winsettings.ExtFileFilter;
 import ru.denis.component.winsettings.GlassFishTableModel;
 import ru.denis.component.winsettings.JDBCConnectTableModel;
 
@@ -36,10 +41,15 @@ public class SettingWindow extends javax.swing.JFrame {
         // создаем модели
         gfModel = new GlassFishTableModel(listGFObj);
         dbModel = new DataBaseTableModel(listDBObj);
-        connJDBCModel = new JDBCConnectTableModel(listJDBCObj);
+        connJDBCModel = new JDBCConnectTableModel(listJDBCObj);      
         
-        // все остальгые компоненты
+        
+        // все остальные компоненты
         initComponents();
+        
+        jTextField5.setText(compCommandBean.getGfRootFolder());
+        jTextField9.setText(compCommandBean.getFileAdminPWD());
+        jTextField10.setText(compCommandBean.getAppNameGkh());
         
         this.setLocationRelativeTo(null);
     }
@@ -54,6 +64,16 @@ public class SettingWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField9 = new javax.swing.JTextField();
+        jButton14 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField10 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -98,6 +118,90 @@ public class SettingWindow extends javax.swing.JFrame {
                 closeSettingWindow(evt);
             }
         });
+
+        jTextField5.setEditable(false);
+        jTextField5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        jLabel6.setText("root каталог GlassFish сервера");
+
+        jButton5.setText("Выбор");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Файл с паролем администратора для GlassFish сервера");
+
+        jTextField9.setEditable(false);
+        jTextField9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        jButton14.setText("Выбор");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+
+        jButton15.setText("Сохранить изменения");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Имя приложения для удаления");
+
+        jTextField10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton15)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTextField9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton5)
+                                .addComponent(jButton14))))
+                    .addComponent(jLabel8)
+                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(57, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5))
+                .addGap(27, 27, 27)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton14))
+                .addGap(33, 33, 33)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                .addComponent(jButton15)
+                .addGap(44, 44, 44))
+        );
+
+        jTabbedPane1.addTab("Общая информация", jPanel5);
 
         jLabel1.setText("Список доменов");
 
@@ -236,7 +340,6 @@ public class SettingWindow extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
@@ -334,7 +437,7 @@ public class SettingWindow extends javax.swing.JFrame {
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton8)
                     .addComponent(jButton9)
@@ -383,8 +486,7 @@ public class SettingWindow extends javax.swing.JFrame {
         
         mainWindow.setVisible(true);
         
-        System.out.println("закрыли нстройки");
-        
+        //System.out.println("закрыли нстройки");        
     }//GEN-LAST:event_closeSettingWindow
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -395,10 +497,73 @@ public class SettingWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JFileChooser fileopen = new JFileChooser();
+        fileopen.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        int ret = fileopen.showDialog(null, "Выбор каталога");				
+        if (ret == JFileChooser.APPROVE_OPTION) {
+                File file = fileopen.getSelectedFile();
+                jTextField5.setText(file.toString());
+                isEditCommSet = true;
+                dirGF = file;    
+        }
+                                
+                                
+                                
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+               
+        JFileChooser fileopen = new JFileChooser();
+        ExtFileFilter ff1 = new ExtFileFilter("properties", "*.properties — файлы свойств");
+        fileopen.addChoosableFileFilter(ff1);
+
+        fileopen.setFileFilter(ff1);
+
+        fileopen.setDialogTitle("Выбор файла");
+        fileopen.setApproveButtonText("Выбрать");
+        fileopen.setDialogType(JFileChooser.OPEN_DIALOG);
+        int ret = fileopen.showDialog(null, null);				
+				
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            File file = fileopen.getSelectedFile();
+            jTextField9.setText(file.toString());
+            isEditCommSet = true;
+            filePwd = file;
+	}
+                                
+                                
+                                
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        if(!isEditCommSet){
+            JOptionPane.showMessageDialog(this, "Данные не изменялись", "Информация", JOptionPane.WARNING_MESSAGE);
+            
+            return;
+        }
+        
+        compCommandBean.saveCommonSetting(dirGF, filePwd, appNameGkh);
+        
+        dirGF = null;
+        filePwd = null;
+        appNameGkh = null;
+        
+        isEditCommSet = false;
+        
+        JOptionPane.showMessageDialog(this, "Операция выполненна успешно", "Информация", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButton15ActionPerformed
+
     public void setMainWindow(MainWindow mw){
         mainWindow = mw;
     }
-
+    
+    private File dirGF;
+    private File filePwd;
+    private String appNameGkh;
+    private boolean isEditCommSet = false;
+    
     private MainWindow mainWindow = null;
     
     private ComponentCommBean compCommandBean;
@@ -417,9 +582,12 @@ public class SettingWindow extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
@@ -429,10 +597,14 @@ public class SettingWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
@@ -443,11 +615,14 @@ public class SettingWindow extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

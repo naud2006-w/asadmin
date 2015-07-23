@@ -19,6 +19,7 @@ import ru.denis.command.LoggerBean;
 import ru.denis.component.JDBCConnectObject;
 import ru.denis.component.DomainGFObject;
 import ru.denis.component.SchemaUsrObject;
+import ru.denis.utilits.AppConstants;
 
 /**
  * Класс для обслуживания базы данных.
@@ -135,8 +136,9 @@ public class DataBaseUtils {
                 conL.commit();
                 
                 // первоначальное заполнение данными
-                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (1, 'pathglassfish', 'Каталог сервера Glassfish', 'c:\\glassfish4', 'Каталог сервера Glassfish')");
-                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (2, 'defaultadminpass', 'Файл с паролем админа', 'd:\\default.adminPassword.properties', 'файл с паролем админа' )");                               
+                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (1, '"+ AppConstants.sn_pathglassfish + "', '" + AppConstants.pathglassfish +"', 'c:\\glassfish4', 'Каталог сервера Glassfish')");
+                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (2, '"+ AppConstants.sn_defadmpasswordfile + "', '" + AppConstants.defadmpasswordfile +"', 'd:\\default.adminPassword.properties', 'файл с паролем админа' )");                               
+                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (3, '"+ AppConstants.sn_app_name_gkh + "', '" + AppConstants.app_name_gkh +"', 'web', 'программа для удаления с сервера' )");                               
            } 
         }catch(Exception e){
             throw new Exception("Ошибка при создании таблицы для хранения настроек системы");
@@ -145,6 +147,11 @@ public class DataBaseUtils {
             stmt.close();
         }
     }    
+    
+    
+    
+    
+    
     
     private void initJDBCConnectTable() throws Exception{
         Connection conL = null;
@@ -272,7 +279,7 @@ public class DataBaseUtils {
         }
     }
     
-    private void executeInsertQuery(String sql) throws Exception{
+    public void executeInsertQuery(String sql) throws Exception{
         Connection conL = null;
         
         try{
@@ -435,5 +442,6 @@ public class DataBaseUtils {
         }        
         
         return res;
-    } 
+    }
+    
 }

@@ -1,6 +1,7 @@
 
 package ru.denis.command;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -9,6 +10,8 @@ import ru.denis.component.DomainGFObject;
 import ru.denis.component.JDBCConnectObject;
 import ru.denis.component.SchemaUsrObject;
 import ru.denis.db.DataBaseUtils;
+import ru.denis.utilits.AppConstants;
+import ru.denis.utilits.StringUtilits;
 
 /**
  * Вспомогательный класс для обслуживания команд к компонентам.
@@ -80,4 +83,98 @@ public class ComponentCommBean {
         return listelement;
     }
     
+    
+    public String getGfRootFolder(){        
+        String res = "";
+        
+        DataBaseUtils dbu;
+        try {
+            dbu = DataBaseUtils.getInstance();                    
+            
+            res = dbu.getSettingByName(AppConstants.sn_pathglassfish);          
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ComponentCommBean.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+        
+        return res;
+    }
+    
+    public String getFileAdminPWD(){
+        String res = "";
+        
+        DataBaseUtils dbu;
+        try {
+            dbu = DataBaseUtils.getInstance();                    
+            
+            res = dbu.getSettingByName(AppConstants.sn_defadmpasswordfile);          
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ComponentCommBean.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+        
+        return res;
+    }
+    
+    public String getAppNameGkh(){
+        String res = "";
+        
+        DataBaseUtils dbu;
+        try {
+            dbu = DataBaseUtils.getInstance();                    
+            
+            res = dbu.getSettingByName(AppConstants.sn_app_name_gkh);          
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ComponentCommBean.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+        
+        return res;
+    }
+    
+    public void saveCommonSetting(File gfFolder, File adminPWDfile, String appNameGkh){
+        
+        String upGfFolder = "";
+        String upAdminPwd = "";
+        String upAppNameGkh = "";
+        
+        if(gfFolder != null){
+            upGfFolder = String.format("update SYSTEM_SETTING s set s.value = '%s' where s.name_sys = '%s'", 
+                    gfFolder.toString(),
+                    AppConstants.sn_pathglassfish
+                );
+        }
+        
+        if(adminPWDfile != null){
+            upAdminPwd = String.format("update SYSTEM_SETTING s set s.value = '%s' where s.name_sys = '%s'",
+                adminPWDfile,
+                AppConstants.sn_defadmpasswordfile);
+        }
+        
+        if(!StringUtilits.isEmpty(appNameGkh)){
+            upAppNameGkh = String.format("update SYSTEM_SETTING s set s.value = '%s' where s.name_sys = '%s'",
+                appNameGkh,
+                AppConstants.sn_app_name_gkh);
+        }
+        
+        DataBaseUtils dbu;
+        try {
+            dbu = DataBaseUtils.getInstance();                    
+            
+            if(!StringUtilits.isEmpty(upGfFolder)){
+                dbu.executeInsertQuery(upGfFolder); 
+            }
+            
+            if(!StringUtilits.isEmpty(upAdminPwd)){
+                dbu.executeInsertQuery(upAdminPwd); 
+            }
+            
+            if(!StringUtilits.isEmpty(upAdminPwd)){
+                dbu.executeInsertQuery(upAppNameGkh); 
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ComponentCommBean.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
 }
