@@ -19,6 +19,8 @@ import ru.denis.component.winsettings.DataBaseTableModel;
 import ru.denis.component.winsettings.ExtFileFilter;
 import ru.denis.component.winsettings.GlassFishTableModel;
 import ru.denis.component.winsettings.JDBCConnectTableModel;
+import ru.denis.db.DataBaseUtils;
+import static ru.denis.utilits.StringUtilits.isEmpty;
 
 /**
  *
@@ -49,7 +51,7 @@ public class SettingWindow extends javax.swing.JFrame {
         
         jTextField5.setText(compCommandBean.getGfRootFolder());
         jTextField9.setText(compCommandBean.getFileAdminPWD());
-        jTextField10.setText(compCommandBean.getAppNameGkh());
+        jTextField10.setText(compCommandBean.getAppNameGkh());        
         
         this.setLocationRelativeTo(null);
     }
@@ -399,12 +401,32 @@ public class SettingWindow extends javax.swing.JFrame {
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Новая запись"));
 
         jButton8.setText("Сохранить");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("Отмена");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Новая запись");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Удалить");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -555,6 +577,140 @@ public class SettingWindow extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Операция выполненна успешно", "Информация", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButton15ActionPerformed
 
+    /**
+     * Новая запись пользователь для БД
+     * @param evt 
+     */
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+                
+        nameRowUserBd = null;        
+        
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");        
+        
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Новая запись"));        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    /**
+     * Сохранение новой записи об имени пользователя в БД.
+     * @param evt 
+     */
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        
+        // собираем значение из полей
+        String nameS = "";
+        String account = "";
+        String passw = "";
+        StringBuilder sbErrorTxt = new StringBuilder();
+        
+        try{
+            nameS = jTextField6.getText();
+            account = jTextField7.getText();
+            passw = jTextField8.getText();
+
+            int cntErr = 0;        
+            
+
+            if(isEmpty(nameS)){
+                sbErrorTxt.append("Не заполнено наименование настройки  \n");
+                cntErr++;
+            }
+            
+            if(isEmpty(account)){
+                sbErrorTxt.append("Не указана учетная запись в БД \n");
+                cntErr++;
+            }
+            
+            if(isEmpty(passw)){
+                sbErrorTxt.append("Не указан пароль для учетной записи \n");
+                cntErr++;
+            }
+
+
+            if(cntErr > 0) throw new Exception(sbErrorTxt.toString());
+        
+            // пробуем сохранить информациию 
+            String sql = "";
+            if(isEmpty(nameRowUserBd)){
+                sql = String.format("insert into SCHEMA_BD(name, usr, pwd) values ('%s', '%s', '%s')",
+                            nameS,
+                            account,
+                            passw
+                        );
+            }else{
+                sql = String.format("update SCHEMA_BD t set t.usr = '%s', t.pwd = '%s' where t.name = '%s' ", 
+                            account,
+                            passw,
+                            nameS
+                        );
+            }
+            
+            DataBaseUtils.getInstance().executeInsertDelUpdateQuery(sql);
+            
+            // если все нормально обнуляем поля
+            jTextField6.setText("");
+            jTextField7.setText("");
+            jTextField8.setText("");
+
+            jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Новая запись")); 
+            
+            if(isEmpty(nameRowUserBd)) nameRowUserBd = null;        
+        }catch(Exception e){
+            StringBuilder sbErrorItog = new StringBuilder();
+            
+            sbErrorItog.append("Ошибки при сохранении: \n \n");                
+            sbErrorItog.append(e.getMessage());
+            sbErrorItog.append("\n");
+            
+            JOptionPane.showMessageDialog(this, sbErrorItog.toString(), "Ошибка", JOptionPane.ERROR_MESSAGE);            
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    /**
+     * Отмена редактирования пользователя БД
+     * @param evt 
+     */
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+                
+            nameRowUserBd = null;
+        
+            jTextField6.setText("");
+            jTextField7.setText("");
+            jTextField8.setText("");
+
+            jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Новая запись"));
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    /**
+     * Удалить настройку БД
+     * @param evt 
+     */
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        // Получаем параметры настроки по id
+        try{
+            if(isEmpty(nameRowUserBd)) return;
+            
+            SchemaUsrObject shUserObj = DataBaseUtils.getInstance().getSchemaUsrObjectByName(nameRowUserBd);
+
+            StringBuilder messageTxt = new StringBuilder();
+
+            messageTxt.append("Подтверждаете удаление настройки с параметрами? \n \n")
+                    .append("наименование: ").append(shUserObj.getName()).append("\n")
+                    .append("учетная запись: ").append(shUserObj.getName()).append("\n")
+                    .append("пароль: ").append(shUserObj.getName()).append("\n");
+
+
+            if(JOptionPane.showConfirmDialog(this, messageTxt.toString(), "Подтверждение", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+             JOptionPane.showMessageDialog(this, "Зашли", "Инфо", JOptionPane.INFORMATION_MESSAGE);   
+            }
+        
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     public void setMainWindow(MainWindow mw){
         mainWindow = mw;
     }
@@ -563,6 +719,7 @@ public class SettingWindow extends javax.swing.JFrame {
     private File filePwd;
     private String appNameGkh;
     private boolean isEditCommSet = false;
+    private String nameRowUserBd = null; // устанавливаем что запись новая
     
     private MainWindow mainWindow = null;
     

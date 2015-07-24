@@ -44,7 +44,7 @@ public class About extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         jTextArea1.setRows(5);
-        jTextArea1.setText("программа для обслуживания Glassfish сервреров.");
+        jTextArea1.setText("программа для обслуживания доменов Glassfish.");
         jScrollPane1.setViewportView(jTextArea1);
 
         jLabel1.setText("Версия :");

@@ -162,19 +162,20 @@ public class ComponentCommBean {
             dbu = DataBaseUtils.getInstance();                    
             
             if(!StringUtilits.isEmpty(upGfFolder)){
-                dbu.executeInsertQuery(upGfFolder); 
+                dbu.executeInsertDelUpdateQuery(upGfFolder); 
             }
             
             if(!StringUtilits.isEmpty(upAdminPwd)){
-                dbu.executeInsertQuery(upAdminPwd); 
+                dbu.executeInsertDelUpdateQuery(upAdminPwd); 
             }
             
             if(!StringUtilits.isEmpty(upAdminPwd)){
-                dbu.executeInsertQuery(upAppNameGkh); 
+                dbu.executeInsertDelUpdateQuery(upAppNameGkh); 
             }
             
         } catch (Exception ex) {
             Logger.getLogger(ComponentCommBean.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
+    
 }

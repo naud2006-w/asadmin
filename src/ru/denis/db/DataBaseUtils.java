@@ -136,9 +136,9 @@ public class DataBaseUtils {
                 conL.commit();
                 
                 // первоначальное заполнение данными
-                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (1, '"+ AppConstants.sn_pathglassfish + "', '" + AppConstants.pathglassfish +"', 'c:\\glassfish4', 'Каталог сервера Glassfish')");
-                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (2, '"+ AppConstants.sn_defadmpasswordfile + "', '" + AppConstants.defadmpasswordfile +"', 'd:\\default.adminPassword.properties', 'файл с паролем админа' )");                               
-                executeInsertQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (3, '"+ AppConstants.sn_app_name_gkh + "', '" + AppConstants.app_name_gkh +"', 'web', 'программа для удаления с сервера' )");                               
+                executeInsertDelUpdateQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (1, '"+ AppConstants.sn_pathglassfish + "', '" + AppConstants.pathglassfish +"', 'c:\\glassfish4', 'Каталог сервера Glassfish')");
+                executeInsertDelUpdateQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (2, '"+ AppConstants.sn_defadmpasswordfile + "', '" + AppConstants.defadmpasswordfile +"', 'd:\\default.adminPassword.properties', 'файл с паролем админа' )");                               
+                executeInsertDelUpdateQuery(" insert into SYSTEM_SETTING (id, name_sys, name, value, note) values (3, '"+ AppConstants.sn_app_name_gkh + "', '" + AppConstants.app_name_gkh +"', 'web', 'программа для удаления с сервера' )");                               
            } 
         }catch(Exception e){
             throw new Exception("Ошибка при создании таблицы для хранения настроек системы");
@@ -180,14 +180,14 @@ public class DataBaseUtils {
                 conL.commit();
                 
                 // первоначальное заполнение данными                
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ЛПР db23', 'jdbc:oracle:thin:@192.168.3.23:1521:db23')");
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ЛПР xe', 'jdbc:oracle:thin:@192.168.3.23:11521:xe')");
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('Мурманск xe', 'jdbc:oracle:thin:@192.168.3.27:1521:xe')");
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('Калмыкия xe', 'jdbc:oracle:thin:@192.168.3.156:1521:xe')");
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('Новгород xe', 'jdbc:oracle:thin:@192.168.3.29:1521:xe')");
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ssh Краснодар localhost:21521:krasdb', 'jdbc:oracle:thin:@localhost:21521:krasdb')");
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ssh Мурманск localhost:21521:murdb', 'jdbc:oracle:thin:@localhost:21521:murdb')");
-                executeInsertQuery(" insert into JDBC_LINK(name, link) values ('ЛПР 3.30', 'jdbc:oracle:thin:@192.168.3.30:1521:murdb')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('ЛПР db23', 'jdbc:oracle:thin:@192.168.3.23:1521:db23')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('ЛПР xe', 'jdbc:oracle:thin:@192.168.3.23:11521:xe')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('Мурманск xe', 'jdbc:oracle:thin:@192.168.3.27:1521:xe')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('Калмыкия xe', 'jdbc:oracle:thin:@192.168.3.156:1521:xe')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('Новгород xe', 'jdbc:oracle:thin:@192.168.3.29:1521:xe')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('ssh Краснодар localhost:21521:krasdb', 'jdbc:oracle:thin:@localhost:21521:krasdb')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('ssh Мурманск localhost:21521:murdb', 'jdbc:oracle:thin:@localhost:21521:murdb')");
+                executeInsertDelUpdateQuery(" insert into JDBC_LINK(name, link) values ('ЛПР 3.30', 'jdbc:oracle:thin:@192.168.3.30:1521:murdb')");
            } 
         }catch(Exception e){
             throw new Exception("Ошибка при создании таблицы для хранения серверов.");
@@ -224,8 +224,8 @@ public class DataBaseUtils {
                 conL.commit();
                 
                 // первоначальное заполнение данными                
-                executeInsertQuery(" insert into DOMAIN_GF(name, port) values ('domain2', 20048)");
-                executeInsertQuery(" insert into DOMAIN_GF(name, port) values ('domain1', 4848)");                
+                executeInsertDelUpdateQuery(" insert into DOMAIN_GF(name, port) values ('domain2', 20048)");
+                executeInsertDelUpdateQuery(" insert into DOMAIN_GF(name, port) values ('domain1', 4848)");                
            } 
         }catch(Exception e){
             throw new Exception("Ошибка при создании таблицы для хранения доменов GF.");
@@ -262,14 +262,14 @@ public class DataBaseUtils {
                 conL.commit();
                 
                 // первоначальное заполнение данными                
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('kalmykiya_prod', 'kalmykiya_prod', 'kalmykiya_prod')");
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('kalmykiya_prod0213', 'kalmykiya_prod0213', 'kalmykiya_prod0213')");
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('krasnodar_prod', 'krasnodar_prod', 'krasnodar_prod')");
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('krasnodar_prod0505', 'krasnodar_prod0505', 'krasnodar_prod0505')");
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('candidate_test', 'candidate_test', 'candidate_test')");
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('novgorod_prod', 'novgorod_prod', 'novgorod_prod')");
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('release_test', 'release_test', 'release_test')");
-                executeInsertQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('murmansk_prod0430', 'murmansk_prod0430', 'murmansk_prod0430')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('kalmykiya_prod', 'kalmykiya_prod', 'kalmykiya_prod')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('kalmykiya_prod0213', 'kalmykiya_prod0213', 'kalmykiya_prod0213')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('krasnodar_prod', 'krasnodar_prod', 'krasnodar_prod')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('krasnodar_prod0505', 'krasnodar_prod0505', 'krasnodar_prod0505')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('candidate_test', 'candidate_test', 'candidate_test')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('novgorod_prod', 'novgorod_prod', 'novgorod_prod')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('release_test', 'release_test', 'release_test')");
+                executeInsertDelUpdateQuery(" insert into SCHEMA_BD(name, usr, pwd) values ('murmansk_prod0430', 'murmansk_prod0430', 'murmansk_prod0430')");
            } 
         }catch(Exception e){
             throw new Exception("Ошибка при создании таблицы для хранения информации о схемах пользователя.");
@@ -279,7 +279,7 @@ public class DataBaseUtils {
         }
     }
     
-    public void executeInsertQuery(String sql) throws Exception{
+    public void executeInsertDelUpdateQuery(String sql) throws Exception{
         Connection conL = null;
         
         try{
@@ -296,6 +296,7 @@ public class DataBaseUtils {
             throw new Exception("Ошибка при выполнении запроса. " + e.getMessage());
         }    
     }    
+    
     
     public String getSettingByName(String name) throws Exception{
         String resStr = "";
@@ -443,5 +444,45 @@ public class DataBaseUtils {
         
         return res;
     }
+    
+    public SchemaUsrObject getSchemaUsrObjectByName(String name) throws Exception {
+        SchemaUsrObject res = null;
+        
+        Connection conL = null;
+                
+        String sql = "select id, name, usr, pwd from SCHEMA_BD where name = " + name;
+        
+        Statement stmt = null;
+        ResultSet resSql = null;
+        
+        try{
+            conL = getConnect();
+
+            stmt = conL.createStatement() ;
+
+            resSql = stmt.executeQuery(sql); 
+            
+            if(resSql.getFetchSize() < 1) throw new Exception("Ошибка поиска настройки пользователя по имени " + name);
+
+            while(resSql.next()){
+                SchemaUsrObject jo = new SchemaUsrObject(resSql.getString("name"), resSql.getString("usr"), resSql.getString("pwd"));                 
+            }         
+
+        }catch(Exception e){
+            throw e;
+            // пишем в лог
+            //LoggerBean.writeLog(e.getMessage());
+        }finally{            
+            try {
+                resSql.close();
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DataBaseUtils.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }        
+        
+        return res;
+    }
+    
     
 }
