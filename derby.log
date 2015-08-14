@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Fri Jul 24 16:57:47 AST 2015:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-014e-c05b-0567-00000e9c0818 
-on database directory C:\Users\naumenko_ds\AppData\Local\asadminj\db  with class loader sun.misc.Launcher$AppClassLoader@f7e5307 
-Loaded from file:/D:/GIT/asadmin/src/lib/derby.jar
+Sat Jul 25 00:23:50 MSK 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-014e-c1bc-768a-000007185d58 
+on database directory C:\Users\Denis\AppData\Local\asadminj\db  with class loader sun.misc.Launcher$AppClassLoader@6c5bdfae 
+Loaded from file:/C:/R/asadmin/src/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.7.0_71-b14
-user.dir=D:\GIT\asadmin
+java.runtime.version=1.7.0_21-b11
+user.dir=C:\R\asadmin
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

@@ -396,6 +396,11 @@ public class SettingWindow extends javax.swing.JFrame {
         jTabbedPane1.addTab("JDBC ссылка доступа к БД", jPanel2);
 
         jTable3.setModel(this.dbModel);
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                schemaBDdblClk(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Новая запись"));
@@ -654,8 +659,8 @@ public class SettingWindow extends javax.swing.JFrame {
             jTextField8.setText("");
 
             jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Новая запись")); 
-            
-            if(isEmpty(nameRowUserBd)) nameRowUserBd = null;        
+            JOptionPane.showMessageDialog(this, "Операция выполненна успешно", "Информация", JOptionPane.INFORMATION_MESSAGE);
+            if(!isEmpty(nameRowUserBd)) nameRowUserBd = null;        
         }catch(Exception e){
             StringBuilder sbErrorItog = new StringBuilder();
             
@@ -710,6 +715,19 @@ public class SettingWindow extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void schemaBDdblClk(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schemaBDdblClk
+        // если двойной клик то работаем
+        if(evt.getClickCount() == 2){           
+            JOptionPane.showMessageDialog(this, "Зашли", "Инфо", JOptionPane.INFORMATION_MESSAGE); 
+//            try {
+//                this.jTabbedPane1.setSelectedIndex(0);
+//                jTextArea2.setText(CommandBean.createCommand((String) jList1.getSelectedValue(), this));
+//            } catch (Exception ex) {
+//                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        }
+    }//GEN-LAST:event_schemaBDdblClk
 
     public void setMainWindow(MainWindow mw){
         mainWindow = mw;
