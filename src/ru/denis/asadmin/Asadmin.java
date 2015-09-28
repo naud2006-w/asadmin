@@ -44,15 +44,17 @@ public class Asadmin {
             CommandBean.initWorkFolder();
             
             DataBaseUtils du = DataBaseUtils.getInstance();            
-
+            
+            final MainWindow mw = new MainWindow();
+            
             java.awt.EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new MainWindow().setVisible(true);                
+                    mw.setVisible(true);                
                 }
             });
 
-            setTrayIcon();        
+            setTrayIcon(mw);        
             
         } catch (Exception ex) {
             Logger.getLogger(Asadmin.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,12 +63,27 @@ public class Asadmin {
     
     
     // помещаем в трей значек
-    private static void setTrayIcon() {
+    private static void setTrayIcon(final MainWindow mw) {
         if(! SystemTray.isSupported() ) {
           return;
         }
 
         PopupMenu trayMenu = new PopupMenu();
+        
+        MenuItem itemCTM = new MenuItem("Время");
+        itemCTM.addActionListener(new ActionListener(){            
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                long ctm = System.currentTimeMillis();
+                                
+                mw.setTextCustom("System.currentTimeMils(): " + ctm); 
+            }
+        });
+        
+        trayMenu.add(itemCTM);        
+        trayMenu.insertSeparator(1);
+        
         MenuItem item = new MenuItem("Выйти");
         item.addActionListener(new ActionListener() {
           @Override

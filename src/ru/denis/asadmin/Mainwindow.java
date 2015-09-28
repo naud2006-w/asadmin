@@ -459,6 +459,10 @@ public class MainWindow extends javax.swing.JFrame {
         jTextArea1.setText("");
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    public void setTextCustom(String text){
+        this.jTabbedPane1.setSelectedIndex(1);
+        LoggerBean.writeLogText(jTextArea1,  text);
+    }
     
     public JTextArea getLogComponent(){
         return this.jTextArea1;
